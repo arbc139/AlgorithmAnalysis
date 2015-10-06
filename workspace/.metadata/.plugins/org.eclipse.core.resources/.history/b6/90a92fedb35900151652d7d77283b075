@@ -1,0 +1,64 @@
+package lineSegment;
+
+import java.util.ArrayList;
+
+public class LineSegment {
+	// Segment Ingredient class
+	static class SegmentIngredient {
+		Boolean isNoGradient;
+		
+		SegmentIngredient(double gradient, double y_intercept) {
+			isNoGradient = false;
+			this.gradient = gradient;
+			this.y_intercept = y_intercept;
+		}
+		
+		SegmentIngredient(double x_intercept) {
+			isNoGradient = true;
+			this.x_intercept = x_intercept;
+		}
+		
+		private double gradient;
+		private double y_intercept;
+		
+		private double x_intercept;
+		
+		public double getGradient() throws Exception {
+			if(!isNoGradient) return gradient;
+			else throw new Exception("There is no gradient");
+		}
+		public double getYIntercept() throws Exception {
+			if(!isNoGradient) return y_intercept;
+			else throw new Exception("There is no gradient");
+		}
+		public double getXIntercept() throws Exception {
+			if(isNoGradient) return x_intercept;
+			else throw new Exception("There is no gradient");
+		}
+		
+		public static SegmentIngredient makeIngredient(Point p1, Point p2) {
+			if(p1.x == p2.x)	return new SegmentIngredient(p1.x);
+			else {
+				double gradient = (double)(p1.y - p2.y) / (double)(p1.x - p2.x);
+				double y_intercept = p1.y - gradient*p1.x;
+				return new SegmentIngredient(gradient, y_intercept);
+			}
+		}
+	}
+	
+	ArrayList<Point> points = new ArrayList<Point>();
+	SegmentIngredient ingredient;
+	
+	public LineSegment(Point p1, Point p2) {
+		points.add(p1); points.add(p2);
+		ingredient = SegmentIngredient.makeIngredient(p1, p2);
+	}
+	
+	public Boolean isOnLineSegment(Point p) throws Exception {
+		if(ingredient.isNoGradient) return p.x == ingredient.getXIntercept();
+		else {
+			double compareYValue = ingredient.getGradient() * p.x + ingredient.getYIntercept();
+			return Double.valueOf(compareYValue).equals(Double.valueOf(p.y));
+		}
+	}
+}

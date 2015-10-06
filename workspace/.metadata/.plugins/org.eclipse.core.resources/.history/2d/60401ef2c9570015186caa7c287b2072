@@ -1,0 +1,22 @@
+package lineSegment;
+
+import java.util.ArrayList;
+
+public class Point {
+	int x, y;
+	ArrayList<Integer> assignedSegmentIndexList = new ArrayList<Integer>();
+	
+	Point() {
+		x = -1;		y = -1;
+	}
+	Point(int x, int y) {
+		this.x = x;	this.y = y;
+	}
+	
+	public void addSegmentIndex(int index) {
+		assignedSegmentIndexList.add(index);
+	}
+	public Boolean isCrossingPoint() {
+		return assignedSegmentIndexList.size() >= 2
+	}
+}

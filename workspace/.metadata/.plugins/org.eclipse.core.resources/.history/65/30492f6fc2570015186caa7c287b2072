@@ -1,0 +1,31 @@
+package dy;
+
+import java.io.*;
+
+public class DYFile {
+	// variables
+	private final static String mac_path = "/Users/DYKim/Desktop/Algohw";					// + 2/input.txt;
+	private final static String win__path = "c:\\hw2\\input.txt";
+	private String win_output_path = "c:\\hw2\\2012147504.txt";
+	
+	public BufferedReader fin;
+	public PrintWriter fout;
+	
+	public DYFile() throws Exception {
+		fin = new BufferedReader(new FileReader(input_path));
+		fout = new PrintWriter(output_path);
+	}
+	
+	public DYFile(final String input_path, final String output_path) throws Exception {
+		this.input_path = input_path;
+		this.output_path = output_path;
+		
+		fin = new BufferedReader(new FileReader(input_path));
+		fout = new PrintWriter(output_path);
+	}
+	
+	public void close() throws Exception {
+		fout.close();
+		fin.close();
+	}
+}

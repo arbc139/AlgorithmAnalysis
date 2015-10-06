@@ -1,0 +1,10 @@
+package dy;
+
+public class DYTimeRecoder {
+	private static long start;
+	private static long finish;
+	
+	public static void startPoint() {
+		start = System.currentTimeMillis();
+	}
+}

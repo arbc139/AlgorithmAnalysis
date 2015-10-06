@@ -1,0 +1,30 @@
+package dy;
+
+import java.io.*;
+
+public class DYFile {
+	// variables
+	public String input_path = "/Users/DYKim/Desktop/Algohw1/input.txt";		// "c:\\hw1\\input.txt";
+	public String output_path = "/Users/DYKim/Desktop/Algohw1/2012147504.txt";	// "c:\\hw1\\2012147504.txt";
+	
+	public BufferedReader fin;
+	public PrintWriter fout;
+	
+	DYFile() throws Exception {
+		fin = new BufferedReader(new FileReader(input_path));
+		fout = new PrintWriter(output_path);
+	}
+	
+	public DYFile(final String input_path, final String output_path) throws Exception {
+		this.input_path = input_path;
+		this.output_path = output_path;
+		
+		fin = new BufferedReader(new FileReader(input_path));
+		fout = new PrintWriter(output_path);
+	}
+	
+	public void close() throws Exception {
+		fout.close();
+		fin.close();
+	}
+}

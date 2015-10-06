@@ -1,0 +1,48 @@
+package dy;
+
+import java.io.*;
+
+public class DYFile {
+	// static constants
+	private final static String OS = System.getProperty("os.name").toLowerCase();
+	private final static String mac_path = "/Users/DYKim/Desktop/Algohw";		// + 2/input.txt, + n/2012147504.txt;
+	private final static String win__path = "c:\\hw";
+	
+	// static variable
+	public static int homeworkNum = 0;
+	
+	public BufferedReader fin;
+	public PrintWriter fout;
+	
+	public DYFile() throws Exception {
+		// default is win
+		
+		fin = new BufferedReader(new FileReader(input_path));
+		fout = new PrintWriter(output_path);
+	}
+	
+	public DYFile(final String input_path, final String output_path) throws Exception {
+		this.input_path = input_path;
+		this.output_path = output_path;
+		
+		fin = new BufferedReader(new FileReader(input_path));
+		fout = new PrintWriter(output_path);
+	}
+	
+	public void close() throws Exception {
+		fout.close();
+		fin.close();
+	}
+	
+	public boolean isWindows() {
+
+		return (OS.indexOf("win") >= 0);
+
+	}
+
+	public boolean isMac() {
+
+		return (OS.indexOf("mac") >= 0);
+
+	}
+}

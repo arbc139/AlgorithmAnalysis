@@ -1,0 +1,93 @@
+package algoHW2;
+
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
+import lineSegment.*;
+import dy.DYFile;
+import dy.DYConsole;
+
+public class AlgoHW2 {
+	static DYFile file;
+	
+	
+	public static void main(String[] args) throws Exception {
+		// TODO Auto-generated method stub
+		file = new DYFile(2);				// homework no.2!
+		DYConsole.consoleTurnOn = true;	// turn on console mode!
+		
+		findCrossingPoint();
+		
+		
+		file.close();
+	}
+	
+	static void findCrossingPoint() throws Exception {
+		String numberStr = file.fin.readLine();
+		if(numberStr==null) throw new Exception();
+		
+		// parsing number of tree.
+		int numberOfTestCase = Integer.parseInt(numberStr);
+		
+		for(int i=0; i<numberOfTestCase; i++) {
+			file.fin.readLine(); // rid of "\n"
+			int numberOfPoint = Integer.parseInt(file.fin.readLine());
+			ArrayList<Point> points = new ArrayList<Point>();
+			
+			for(int j=0; j<numberOfPoint; j++) {
+				String pointInputStr = file.fin.readLine();
+				DYConsole.println("(" + i + ")::" + pointInputStr);
+				makePoint(pointInputStr, points);
+				DYConsole.println("(" + i + ")::" + "x" + points.get(j).getX() + ", y" + points.get(j).getY());
+			}
+			
+			ArrayList<LineSegment> lineSegments = new ArrayList<LineSegment>();
+			findLineSegments(points, lineSegments);
+			for(int l=0; l<points.size(); l++) {
+				DYConsole.println("points[" + points.get(l).getX() + "," + points.get(l).getY() + "] line: " + points.get(l).showAssignedLineSegment());
+			}
+		}
+	}
+	
+	static void makePoint(String pointInputStr, ArrayList<Point> points) {
+		StringTokenizer st = new StringTokenizer(pointInputStr);		// split lines
+		int x = Integer.parseInt(st.nextToken());	int y = Integer.parseInt(st.nextToken());
+		points.add(new Point(x,y));
+	}
+	
+	static void findLineSegments(ArrayList<Point> points, ArrayList<LineSegment> lineSegments) throws Exception {
+		if(points.size() <= 2) {
+			// print out fail to find
+			return;
+		}
+		for(int i=0; i<points.size(); i++) {
+			for(int j=i+1; j<points.size(); j++) {
+				if(points.get(i).isHavingSameLineSegment(points.get(j))) continue;
+				int lineIndex = lineSegments.size();
+				LineSegment line = new LineSegment(points.get(i), points.get(j));		// find line segment using point[i], point[j]
+
+				Boolean firstTime = true;
+				for(int k=j+1; k<points.size(); k++) {
+					if(line.isOnLineSegment(points.get(k))) {
+						if(firstTime) {
+							line.addPoint(points.get(k));
+							line.setPointsLineIndex(lineIndex);
+							lineSegments.add(line);
+							firstTime = false;
+						}
+						else {
+							points.get(k).addSegmentIndex(lineIndex);
+							line.addPoint(points.get(k));
+						}
+					}
+					//DYConsole.println("points[" + points.get(i).getX() + "," + points.get(i).getY() + "] line: " + points.get(i).showAssignedLineSegment());
+					//DYConsole.println("points[" + points.get(j).getX() + "," + points.get(j).getY() + "] line: " + points.get(j).showAssignedLineSegment());
+					//DYConsole.println("points[" + points.get(k).getX() + "," + points.get(k).getY() + "] line: " + points.get(k).showAssignedLineSegment());
+				}
+			}
+		}
+		
+		
+	}
+
+}

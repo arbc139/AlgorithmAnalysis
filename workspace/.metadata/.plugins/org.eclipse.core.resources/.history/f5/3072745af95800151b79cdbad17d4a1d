@@ -1,0 +1,9 @@
+package lineSegment;
+
+import java.util.ArrayList;
+
+public class LineSegment {
+	ArrayList<Point> points;
+	double gradient;
+	
+}

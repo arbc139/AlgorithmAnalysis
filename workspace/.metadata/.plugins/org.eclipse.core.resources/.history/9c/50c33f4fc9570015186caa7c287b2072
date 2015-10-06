@@ -1,0 +1,6 @@
+package lineSegment;
+
+public class Point {
+	int x, y;
+	ArrayList<Integer>> assignedSegementIndexList;
+}

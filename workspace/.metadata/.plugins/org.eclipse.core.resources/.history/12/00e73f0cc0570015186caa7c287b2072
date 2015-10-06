@@ -1,0 +1,79 @@
+package fileIO;
+
+import java.io.*;
+
+public class FileIO {
+	// variables
+	public String input_path = "/Users/DYKim/Desktop/Algohw1/input.txt";		// "c:\\hw1\\input.txt";
+	public String output_path = "/Users/DYKim/Desktop/Algohw1/2012147504.txt";	// "c:\\hw1\\2012147504.txt";
+	
+	private BufferedReader fin;
+	private PrintWriter fout;
+	
+	FileIO() throws Exception {
+		fin = new BufferedReader(new FileReader(input_path));
+		fout = new PrintWriter(output_path);
+	}
+	
+	FileIO(String input_path, String output_path) throws Exception {
+		this.input_path = input_path;
+		this.output_path = output_path;
+		fin = new BufferedReader(new FileReader(input_path));
+		fout = new PrintWriter(output_path);
+	}
+	/*
+	// constants
+		static final String INPUT_PATH = "/Users/DYKim/Desktop/Algohw1/input.txt";			// "c:\\hw1\\input.txt";		// input file path
+		static final String OUTPUT_PATH = "/Users/DYKim/Desktop/Algohw1/2012147504.txt";	// "c:\\hw1\\2012147504.txt";	// output file path
+		
+		// variables
+		private static BufferedReader fin;										// file Input objects
+		private static PrintWriter fout;										// file Output objects
+		private static int numberOfTree;										// the number of tree
+		
+		// main method
+		public static void main(String[] args) throws Exception {
+			// TODO Auto-generated method stub
+			Main.setFileIO();										// open the files on each file IO object.
+			Main.findTree();										// get input, parsing tree expression, making tree, search key to find from tree.
+	        Main.closeFileIO();										// closing files from each file IO object.
+		}
+
+		static void setFileIO() throws Exception {
+	        fin = new BufferedReader(new FileReader(Main.INPUT_PATH));
+			fout = new PrintWriter(Main.OUTPUT_PATH);
+		}
+		
+		static void closeFileIO() throws Exception {
+			fout.close();
+			fin.close();
+		}
+		
+		static void findTree() throws Exception {
+			// get input from file object, enter it to input list object.
+			String numberStr = fin.readLine();
+			if(numberStr==null) throw new Exception();
+			
+			// parsing number of tree.
+			numberOfTree = Integer.parseInt(numberStr);
+			
+			// repeat number of tree times
+			for(int i=0; i<numberOfTree; i++) {
+				StringTokenizer st = new StringTokenizer(fin.readLine());		// split lines
+				int keyToFind = Integer.parseInt(st.nextToken()); 				// key which need to find
+				String treeExpression = st.nextToken();							// parsing tree expression
+				while(st.hasMoreTokens()) {
+					treeExpression += st.nextToken();
+				}
+				
+				long start = System.nanoTime();					// benchmark of starting algorithm.
+				Tree.Result result = Tree.searchTree(keyToFind, treeExpression, 0, Tree.VER_ROOT);	// making tree, search path which sum is same to key
+				Tree.deleteInstance();																// request to terminate tree's node to the GC (garbage collector)
+		        long finish = System.nanoTime();				// benchmark of finishing algorithm.
+		        System.out.println("(" + i + ")" + "Running Time: " + (finish-start));	// print total running time on console screen.
+		        
+				fout.println(result.path);	// print result to file output object.
+			}
+		}
+		*/
+}

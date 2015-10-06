@@ -1,0 +1,41 @@
+package lineSegment;
+
+import java.util.ArrayList;
+
+public class LineSegment {
+	// Segment Ingredient class
+	static class SegmentIngredient {
+	Boolean isNoGradient;
+	
+	SegmentIngredient(double gradient, double y_intercept) {
+		isNoGradient = false;
+		this.gradient = gradient;
+		this.y_intercept = y_intercept;
+	}
+	
+	SegmentIngredient(double x_intercept) {
+		isNoGradient = true;
+		this.x_intercept = x_intercept;
+	}
+	
+	double gradient;
+	double y_intercept;
+	
+	double x_intercept;
+	
+	public double[] getIngredient() {
+		
+	}
+}
+	
+	ArrayList<Point> points;
+	SegmentIngredient ingredient;
+	
+	LineSegment(Point p1, Point p2) {
+		
+	}
+	
+	public static LineSegment makeLineSegment(Point p1, Point p2) {
+		
+	}
+}

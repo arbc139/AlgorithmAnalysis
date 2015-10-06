@@ -1,0 +1,121 @@
+package algoHW2;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.StringTokenizer;
+
+import lineSegment.*;
+import dy.DYFile;
+import dy.DYConsole;
+import dy.DYTimeRecoder;
+
+public class AlgoHW2 {
+	static DYFile file;	// file object
+	
+	public static void main(String[] args) throws Exception {
+		// TODO Auto-generated method stub
+		file = new DYFile(2);				// homework no.2!
+		DYConsole.consoleTurnOn = false;	// turn on/off console mode!
+		
+		findCrossingPoint();				// let's find the crossing point~
+		
+		file.close();
+	}
+	
+	/*
+	 * findCrossingPoint method
+	 * - to find crossing point in the input case
+	 */
+	static void findCrossingPoint() throws Exception {
+		String numberStr = file.fin.readLine();
+		if(numberStr==null) throw new Exception();	// no input --> exception
+		
+		// parsing number of tree.
+		int numberOfTestCase = Integer.parseInt(numberStr);
+		
+		// loop with number of test case
+		for(int i=0; i<numberOfTestCase; i++) {
+			DYTimeRecoder.startPoint();
+			
+			file.fin.readLine(); // remove "\n"
+			int numberOfPoint = Integer.parseInt(file.fin.readLine());
+			ArrayList<Point> points = new ArrayList<Point>();			// array which contain points
+			
+			// parsing input, make point objects, and fill out array with those
+			for(int j=0; j<numberOfPoint; j++) {
+				String pointInputStr = file.fin.readLine();
+				DYConsole.println("(" + i + ")::" + pointInputStr);
+				makePoint(pointInputStr, points);
+				DYConsole.println("(" + i + ")::" + "x" + points.get(j).getX() + ", y" + points.get(j).getY());
+			}
+			
+			ArrayList<LineSegment> lineSegments = new ArrayList<LineSegment>();	// array which contain line segments
+			findLineSegments(points, lineSegments);	// let's find the line segments from input~
+			
+			ArrayList<Point> foundPoints = new ArrayList<Point>();	// array which contain found points
+			// fill out array with points which belongs to more than 2 line segments --> that is crossing point!
+			for(int j=0; j<points.size(); j++) {
+				DYConsole.println("points[" + points.get(j).getX() + "," + points.get(j).getY() + "] line: " + points.get(j).showAssignedLineSegment());
+				if(points.get(j).getSegmentList().size() >= 2) foundPoints.add(points.get(j));
+			}
+			
+			// sorting found points to lexicographic
+			Collections.sort(foundPoints, new Point.lexicographicCompare());
+			file.fout.println(foundPoints.size());
+			// print out to output file
+			for(int j=0; j<foundPoints.size(); j++) {
+				DYConsole.println("sorted points[" + foundPoints.get(j).getX() + "," + foundPoints.get(j).getY() + "] line: " + foundPoints.get(j).showAssignedLineSegment());
+				file.fout.println(foundPoints.get(j).getX() + " " + foundPoints.get(j).getY());
+			}
+			file.fout.println();
+			
+			DYTimeRecoder.finishPoint();
+			System.out.println(DYTimeRecoder.runningTime());
+		}
+	}
+	
+	/*
+	 * makePoint method
+	 * - parsing input, make point objects, and fill out array with those
+	 */
+	static void makePoint(String pointInputStr, ArrayList<Point> points) {
+		StringTokenizer st = new StringTokenizer(pointInputStr);		// split lines
+		int x = Integer.parseInt(st.nextToken());	int y = Integer.parseInt(st.nextToken());
+		points.add(new Point(x,y));
+	}
+	/*
+	 * findLineSegments method
+	 * - find line segments from input Points
+	 */
+	static void findLineSegments(ArrayList<Point> points, ArrayList<LineSegment> lineSegments) throws Exception {
+		if(points.size() <= 2) return;	// print out fail to find
+		
+		// O(n^3)
+		for(int i=0; i<points.size(); i++) {			// first point
+			for(int j=i+1; j<points.size(); j++) {		// second point
+				if(points.get(i).isHavingSameLineSegment(points.get(j))) continue;	// if second point is already contained in same line segment, skip!
+				int lineIndex = lineSegments.size();								// new line's index --> last position of lineSegments array
+				LineSegment line = new LineSegment(points.get(i), points.get(j));	// find line segment using point[i], point[j] --> invisable(not linked at array, yet)
+				
+				Boolean firstTime = true;
+				for(int k=j+1; k<points.size(); k++) {	// third point
+					if(line.isOnLineSegment(points.get(k))) {	// if third point is on to the line which is made by first point and second point.
+						if(firstTime) {	// only first time in this condition --> finally, line become visable.(linked at array)
+							line.addPoint(points.get(k));
+							line.setPointsLineIndex(lineIndex);
+							lineSegments.add(line);
+							firstTime = false;
+						}
+						else {			// link point to line which is made by first point and second point
+							points.get(k).addSegmentIndex(lineIndex);
+							line.addPoint(points.get(k));
+						}
+					}
+				}
+			}
+		}
+		
+		
+	}
+
+}

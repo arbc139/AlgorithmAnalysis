@@ -1,0 +1,2 @@
+eclipse.preferences.version=1
+prefWatchExpressions=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\n<watchExpressions>\n<expression enabled\="true" text\="expression"/>\n<expression enabled\="true" text\="expression.charAt(index)"/>\n<expression enabled\="true" text\="index"/>\n<expression enabled\="true" text\="keyToFind"/>\n<expression enabled\="true" text\="findEndOfChildTree"/>\n<expression enabled\="true" text\="Tree.root"/>\n</watchExpressions>\n

@@ -1,0 +1,29 @@
+package lineSegment;
+
+import java.util.ArrayList;
+
+public class Point {
+	int x, y;
+	ArrayList<Integer> assignedSegmentIndexList = new ArrayList<Integer>();
+	
+	Point() {
+		x = -1;		y = -1;
+	}
+	public Point(int x, int y) {
+		this.x = x;	this.y = y;
+	}
+	
+	public int getX() { return x; }
+	public int getY() { return y; }
+	
+	public void addSegmentIndex(int index) {
+		assignedSegmentIndexList.add(index);
+	}
+	public ArrayList<Integer> getSegmentList() { return assignedSegmentIndexList; }
+	public Boolean isCrossingPoint() {
+		return assignedSegmentIndexList.size() >= 2;
+	}
+	public Boolean isHavingSameLine(Point p) {
+		
+	}
+}
