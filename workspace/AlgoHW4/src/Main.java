@@ -18,6 +18,7 @@ public class Main {
         Graph.printMode = false;
 
         //testPlace();
+        // execute algorithm!
         executeAlgorithm();
 
         file.close();
@@ -61,6 +62,8 @@ public class Main {
         int testCase = Integer.parseInt(testCaseStr);
 
         for(int i=0; i<testCase; i++) {
+            DYTimeRecoder.startPoint();
+
             String numberStr = file.fin.readLine();
 
             int[] getNumberOfVertexEdge = splitString(numberStr);
@@ -68,21 +71,25 @@ public class Main {
             int numberOfEdge = getNumberOfVertexEdge[1];
 
             karger(numberOfVertex, numberOfEdge);
+
+            DYTimeRecoder.finishPoint();
+
+            System.out.println("Running Time: " + DYTimeRecoder.runningTime());
         }
     }
 
     /**
      * karger algorithm
-     * @param numberOfVertex
-     * @param numberOfEdge
-     * @throws Exception
+     * @param numberOfVertex    : number of vertex
+     * @param numberOfEdge      : number of edge
+     * @throws Exception        : for I/O statement
      */
     public static void karger(int numberOfVertex, int numberOfEdge) throws Exception {
-        int finalMin = Integer.MAX_VALUE;
+        int finalMin = Integer.MAX_VALUE;       // final min cut in n^2 repetition
 
-        Graph g = new Graph(numberOfVertex);
+        Graph g = new Graph(numberOfVertex);    // Graph initializing (make vertex objects)
 
-        for(int j=0; j<numberOfEdge; j++) {
+        for(int j=0; j<numberOfEdge; j++) {     // Edge initializing
             String edgeStr = file.fin.readLine();
 
             int[] fromTo = splitString(edgeStr);
@@ -91,19 +98,24 @@ public class Main {
             g.addEdge(u, v);
         }
 
+        // Do Karger Algorithm (repetition n^2)
         for(int i=0; i < numberOfVertex * numberOfVertex; i++) {
 
+            // assign random weight at each edge
             g.assignRandomWeightInEdge();
 
+            // Do Kruskal Algorithm
+            console.println("\nKARGER::kruskal algorithm started");
             int tempMin = kruskal(g);
+
+            // If temporary min cut by kruskal is smaller than prior???
             if (tempMin < finalMin) {
-                console.println("\nKARGER::kruskal algorithm started");
                 finalMin = tempMin;
                 console.println("KARGER::renewed tempMin: " + tempMin);
             }
 
-            if(i % (numberOfVertex*numberOfVertex/10) == 0)
-                System.out.println("KARGER::rest place! please take a rest, computer!");
+            // intermediate point in loop sequence (for error detecting)
+            // if(i % (numberOfVertex*numberOfVertex/10) == 0) System.out.println("KARGER::rest place! please take a rest, computer!");
         }
 
         console.println("\nKARGER::final result finalMin: " + finalMin);
@@ -111,17 +123,11 @@ public class Main {
         file.fout.println(finalMin);
     }
 
-    public static int[] splitString(String numberStr) {
-        StringTokenizer st = new StringTokenizer(numberStr);
-
-        int firstItem = Integer.parseInt(st.nextToken());
-        int secondItem = Integer.parseInt(st.nextToken());
-
-        int[] result = new int[2];
-        result[0] = firstItem;  result[1] = secondItem;
-        return result;
-    }
-
+    /**
+     * kruskal algorithm
+     * @param G : Graph input
+     * @return  : cut which divide graph to 2 component
+     */
     public static int kruskal(Graph G) {
         /**
          *  <Sudo Code>
@@ -138,26 +144,24 @@ public class Main {
          */
         console.println("\nKRUSKAL::kruskal algorithm started");
 
-        int countOfMinCut = 0;
+        int countOfCut = 0;  // count cut times
 
-        G.makeSet();
+        G.makeSet();    // initial vertexes.parent point to self
         console.println("\nKRUSKAL::makeSet operated");
         G.print();
 
-        ArrayList<Edge> result = new ArrayList<Edge>();
+        ArrayList<Edge> result = new ArrayList<Edge>(); // MST result (X={})
 
         for(Edge e: G.sortEdgeByWeight()) {
             // e = {u, v}
-            if (G.find(e.GetU()) != G.find(e.GetV())) { // is same tree between u and v?
-                result.add(e);
-                if (result.size() == G.GetVertexes().size()-1) {
-                    // remove last MST edge
-                    result.remove(result.size()-1);
-                    // MincutCount++
-                    countOfMinCut++;
+            if (G.find(e.GetU()) != G.find(e.GetV())) { // is not same tree between u and v?
+                result.add(e);  // link U, V
+                if (result.size() == G.GetVertexes().size()-1) {    // if result is 1 component (fully completed MST)
+                    result.remove(result.size()-1); // remove last MST edge
+                    countOfCut++;   // MincutCount++
                 }
                 else
-                    G.union(e.GetU(), e.GetV());
+                    G.union(e.GetU(), e.GetV());    // union U and V
             }
         }
 
@@ -168,6 +172,25 @@ public class Main {
         console.println("\nKRUSKAL::result");
         // System.out.println(result);
 
-        return countOfMinCut;
+        return countOfCut;
+    }
+
+    /*
+        Tool methods
+     */
+    /**
+     * splitString method
+     * @param numberStr : string formed "a b" (a, b is integer)
+     * @return int array which contain value a and b (int[0]=a, int[1]=b)
+     */
+    public static int[] splitString(String numberStr) {
+        StringTokenizer st = new StringTokenizer(numberStr);
+
+        int firstItem = Integer.parseInt(st.nextToken());
+        int secondItem = Integer.parseInt(st.nextToken());
+
+        int[] result = new int[2];
+        result[0] = firstItem;  result[1] = secondItem;
+        return result;
     }
 }
