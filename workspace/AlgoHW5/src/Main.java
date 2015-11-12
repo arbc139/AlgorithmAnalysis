@@ -21,7 +21,7 @@ public class Main {
         console.setClassPrefix("Main");
 
         Main.console.consoleTurnOn = true;
-        PowerSet.console.consoleTurnOn = false;
+        PowerSet.console.consoleTurnOn = true;
         CityDists.console.consoleTurnOn = true;
 
         // test, bug fix algorithm
@@ -34,17 +34,7 @@ public class Main {
 
     public static void testPlace() throws Exception {
         console.setMethodPrefix("testPlace");
-        /*
-        // test 3*3 matrix
-        // matrix
-        int[][] dist = {
-                {-1, 7, -1}, // row 1
-                {8, -1, 6}, // row 2
-                {-1, 8, -1} // row 3
-        };
 
-        int numberOfCity = 3;
-        */
         // PDF example
         int[][] dist = {
                 {-1, 7, -1, 6, -1, -1, 7, 10, -1, -1},
@@ -117,6 +107,8 @@ public class Main {
          *
          *  </Pseudo>
          */
+        console.setMethodPrefix("TSP");
+
         // powerset initialized
         /*
             size 1: [1]
@@ -126,6 +118,7 @@ public class Main {
             size n: [1,2,3,...,n]
          */
         PowerSet powersets = new PowerSet(numberOfCity);
+        console.println("make powerset completed");
 
         // City Distances information
         CityDists C = new CityDists();
