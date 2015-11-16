@@ -39,7 +39,26 @@ public class LPManager {
         this.numberOfPureConstraints = numberOfPureConstraints;
     }
 
+    /**
+     * linearProgramming method
+     * @return object values in sequence. if unbounded, return null.
+     *
+     * execute linear programming in this case class.
+     * case class' data is not changed. because of using local data.
+     */
     public ArrayList<Double> linearProgramming() {
+        /**
+         * <The Simplex Algorithm Pseudo code>
+         *
+         * let v be any vertex of the feasible region
+         *
+         * while there is a neighbor v' of v with better objective value
+         *  set v = v'
+         *
+         *
+         * 1. Check if the current vertex is optimal. if so, halt
+         * 2. Determine where to move next.
+         */
         console.setMethodPrefix("linearProgramming");
         ArrayList<Double> solution = new ArrayList<Double>();
 
@@ -47,12 +66,6 @@ public class LPManager {
             solution.add(0.0);
             return solution;
         }
-        /*
-        // origin constraints
-        HashSet<Integer> origin = new HashSet<Integer>();
-        for(int i=0; i<numberOfVariables; i++)
-            origin.add(numberOfPureConstraints+i);
-*/
 
         // make objFunc, constraints clone
         ObjFunc localObjFunc = new ObjFunc(numberOfVariables, new ArrayList<Double>(this.objFunc.coeffs));
@@ -83,13 +96,20 @@ public class LPManager {
             solution.add(localObjFunc.objValue);
 
             if(localObjFunc.isOptimal()) {
-                System.out.println("UREKA");
                 return solution;
             }
         }
 
     }
 
+    /**
+     * changeToLocalOptimumCoor method
+     * @param localObjFunc objective function to change better case coordinate. which is local(base not changed)
+     * @param localConstraints constraints to change better case coordinate. which is local(base not changed)
+     * @return if unbounded, return false.
+     *
+     * change coordinate
+     */
     public boolean changeToLocalOptimumCoor(ObjFunc localObjFunc, ArrayList<Constraint> localConstraints) {
         console.setMethodPrefix("changeToLocalOptimumCoor");
 
@@ -129,15 +149,11 @@ public class LPManager {
         }
         console.println("tight constraint index: " + tightConstraintIndex);
         tightConstraint.printInsideData(console);
-/*
-        // add tightest constraint from current vertex
-        origin.add(tightConstraintIndex);
-*/
+
         // Move Coordinate x to y (change obj func, constraints)
         // change obj func
         ObjFunc changedObjFunc = localObjFunc.changeCoordinate(largestCoeffVariableIndex, tightConstraint);
 
-        // FIXIT: - i==k case, x>=0 case not attempted
         // change constraints
         ArrayList<Constraint> changedConstraints = new ArrayList<Constraint>();
         for(int i=0; i<numberOfPureConstraints; i++) {

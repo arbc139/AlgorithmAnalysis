@@ -17,8 +17,7 @@ public class Expression {
 
     /**
      * splitRowString method
-     * @param rowStr
-     * @param numberOfCity
+     * @param str
      * @return
      */
     public static ArrayList<Double> splitExpressionString(String str) {

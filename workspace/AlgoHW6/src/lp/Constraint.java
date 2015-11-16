@@ -15,6 +15,11 @@ public class Constraint extends Expression {
         this.maxConst = maxConst;
     }
 
+    /**
+     * getTightnessValue method
+     * @param targetVariableIndex : largest coefficient variable in objective function
+     * @return tight value on this constraint
+     */
     double getTightnessValue(int targetVariableIndex) {
         double targetCoeffValue = coeffs.get(targetVariableIndex);
         if (targetCoeffValue <= 0)
@@ -24,7 +29,14 @@ public class Constraint extends Expression {
             return maxConst / targetCoeffValue;
     }
 
-    // case "Aw * X <= Bw (w!=tight)"
+    /**
+     * changeCoordinate method
+     * @param targetVariableIndex : largest coefficient variable in objective function
+     * @param tightConstraint : selected constraint by optimize conditions
+     * @return changed coordinate constraint
+     *
+     * case "Aw * X <= Bw (w!=tight constraint)"
+     */
     Constraint changeCoordinate(int targetVariableIndex, Constraint tightConstraint) {
         ArrayList<Double> newCoeffs = new ArrayList<Double>();
         ArrayList<Double> tightCoeffs = tightConstraint.coeffs;

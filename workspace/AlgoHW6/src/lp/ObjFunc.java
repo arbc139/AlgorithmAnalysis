@@ -29,6 +29,12 @@ public class ObjFunc extends Expression{
         return new Pair<Integer, Double>(largestCoeffIndex,largestCoeffValue);
     }
 
+    /**
+     * changeCoordinate method
+     * @param targetVariableIndex : largest coefficient variable in objective function
+     * @param tightConstraint : selected constraint by optimize conditions
+     * @return changed coordinate objective function
+     */
     ObjFunc changeCoordinate(int targetVariableIndex, Constraint tightConstraint) {
         ArrayList<Double> newCoeffs = new ArrayList<Double>();
         ArrayList<Double> tightCoeffs = tightConstraint.coeffs;
@@ -60,6 +66,10 @@ public class ObjFunc extends Expression{
         return newObjFunc;
     }
 
+    /**
+     * isOptimal method
+     * @return true if all coefficients is negative in objective function
+     */
     boolean isOptimal() {
         for(double coeff: coeffs) {
             if (coeff >= 0)

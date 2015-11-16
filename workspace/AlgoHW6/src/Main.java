@@ -1,13 +1,21 @@
+import dy.DYFile;
+import dy.DYTimeRecoder;
 import lp.LPManager;
+
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class Main {
+    static DYFile file;
 
+    public static void main(String[] args) throws Exception {
+        file = new DYFile(6);
+        LPManager.console.consoleTurnOn = false;
 
-    public static void main(String[] args) {
-        LPManager.console.consoleTurnOn = true;
+        // testPlace();
+        executeAlgorithm();
 
-        testPlace();
+        file.close();
     }
 
     public static void testPlace() {
@@ -27,16 +35,52 @@ public class Main {
         ArrayList<Double> result = manager.linearProgramming();
         System.out.println(result);
     }
-    /**
-     * <The Simplex Algorithm Pseudo code>
-     *
-     * let v be any vertex of the feasible region
-     *
-     * while there is a neighbor v' of v with better objective value
-     *  set v = v'
-     *
-     *
-     * 1. Check if the current vertex is optimal. if so, halt
-     * 2. Determine where to move next.
-     */
+
+    public static void executeAlgorithm() throws Exception {
+        int numberOfTestCases = Integer.parseInt(file.fin.readLine());
+
+        for(int i=0; i<numberOfTestCases; i++) {
+            DYTimeRecoder.startPoint();
+
+            int[] varAndConst = splitString(file.fin.readLine());
+            int numberOfVariables = varAndConst[0];
+            int numberOfConstraints = varAndConst[1];
+
+            String objFunction = file.fin.readLine();
+            ArrayList<String> constraints = new ArrayList<String>();
+            for(int j=0; j<numberOfConstraints; j++) {
+                constraints.add(file.fin.readLine());
+            }
+
+            LPManager manager = new LPManager(numberOfVariables, numberOfConstraints, objFunction, constraints);
+
+            ArrayList<Double> result = manager.linearProgramming();
+            System.out.println(result);
+            if (result == null) {
+                file.fout.println("Unbounded");
+            }
+            else {
+                for(double objValue: result) {
+                    double roundedValue = (double)Math.round(objValue * 100) / 100.0;
+                    file.fout.print(roundedValue + " ");
+                }
+                file.fout.println("");
+            }
+
+            DYTimeRecoder.finishPoint();
+
+            System.out.println("running time: "+DYTimeRecoder.runningTime());
+        }
+    }
+
+    public static int[] splitString(String str) {
+        StringTokenizer st = new StringTokenizer(str);
+
+        int[] result = new int[2];
+
+        result[0] = Integer.parseInt(st.nextToken());
+        result[1] = Integer.parseInt(st.nextToken());
+
+        return result;
+    }
 }
