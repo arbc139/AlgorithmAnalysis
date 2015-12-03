@@ -22,6 +22,7 @@ public class Constraint extends Expression {
      */
     double getTightnessValue(int targetVariableIndex) {
         double targetCoeffValue = coeffs.get(targetVariableIndex);
+        //if (!(targetCoeffValue <= 0 && maxConst <= 0) && (targetCoeffValue <= 0 || maxConst <= 0))
         if (targetCoeffValue <= 0)
             return Double.MAX_VALUE;
 
@@ -47,16 +48,18 @@ public class Constraint extends Expression {
             double coeff;
             if (i==target)
                 coeff =
-                        -1 * coeffs.get(target);
+                        -1 * coeffs.get(target) / tightCoeffs.get(target);
             else
-                coeff =
-                    tightCoeffs.get(target) * coeffs.get(i) - tightCoeffs.get(i) * coeffs.get(target);
+                coeff = // tightCoeffs.get(target) *
+                    coeffs.get(i) - tightCoeffs.get(i) * coeffs.get(target) / tightCoeffs.get(target);
+
+
 
             newCoeffs.add(coeff);
         }
 
-        double newMaxConst =
-                tightCoeffs.get(target) * maxConst - coeffs.get(target) * tightConstraint.maxConst;
+        double newMaxConst = // tightCoeffs.get(target) *
+                        maxConst - coeffs.get(target) * tightConstraint.maxConst / tightCoeffs.get(target);
 
         Constraint newConstraint = new Constraint(numberOfVariables, newCoeffs, newMaxConst);
 

@@ -42,23 +42,28 @@ public class ObjFunc extends Expression{
         int targetIndex = targetVariableIndex;
 
         for(int i=0; i<coeffs.size(); i++) {
+            double value;
             if (i == targetIndex)
-                newCoeffs.add(
-                        -1 * (  coeffs.get(i)
-                                / tightCoeffs.get(i) )
-                );
+                value = -1 * (coeffs.get(i)
+                        / tightCoeffs.get(i));
+
             else
-                newCoeffs.add(
-                        coeffs.get(i)
-                        - ( tightCoeffs.get(i)
-                            * coeffs.get(targetIndex)
-                            / tightCoeffs.get(targetIndex)   )
-                );
+                value = coeffs.get(i)
+                                - (tightCoeffs.get(i)
+                                * coeffs.get(targetIndex)
+                                / tightCoeffs.get(targetIndex));
+
+            newCoeffs.add(value);
+
+            // System.out.println(i + ": " + value + " <selected: " + targetIndex + ">");
+
         }
 
         double newObjValue = coeffs.get(targetIndex)
                             * tightConstraint.maxConst
                             / tightCoeffs.get(targetIndex);
+
+        // System.out.println(newObjValue);
 
         ObjFunc newObjFunc = new ObjFunc(numberOfVariables, newCoeffs);
         newObjFunc.objValue = objValue + newObjValue;

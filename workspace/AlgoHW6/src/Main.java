@@ -42,9 +42,13 @@ public class Main {
         for(int i=0; i<numberOfTestCases; i++) {
             DYTimeRecoder.startPoint();
 
+            //System.out.println(i);
+
             int[] varAndConst = splitString(file.fin.readLine());
             int numberOfVariables = varAndConst[0];
             int numberOfConstraints = varAndConst[1];
+
+            //System.out.println("variables: " + numberOfVariables + "constraints: " + numberOfConstraints);
 
             String objFunction = file.fin.readLine();
             ArrayList<String> constraints = new ArrayList<String>();
@@ -55,7 +59,7 @@ public class Main {
             LPManager manager = new LPManager(numberOfVariables, numberOfConstraints, objFunction, constraints);
 
             ArrayList<Double> result = manager.linearProgramming();
-            System.out.println(result);
+            //System.out.println(result);
             if (result == null) {
                 file.fout.println("Unbounded");
             }

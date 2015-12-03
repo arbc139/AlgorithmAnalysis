@@ -18,8 +18,8 @@ public class LPManager {
     ArrayList<Constraint> constraints;
 
     public LPManager(int numberOfVariables, int numberOfPureConstraints, String objFunc, ArrayList<String> constraints) {
-        console.setClassPrefix("LPManager");
-        console.setMethodPrefix("Constructor");
+        //console.setClassPrefix("LPManager");
+        //console.setMethodPrefix("Constructor");
 
         // Parse String to objFunc
         this.objFunc = new ObjFunc(numberOfVariables, Expression.splitExpressionString(objFunc));
@@ -30,7 +30,7 @@ public class LPManager {
             ArrayList<Double> expr = Expression.splitExpressionString(constraint);
             double maxConst = expr.get(expr.size() - 1);
             expr.remove(expr.size()-1);
-            console.println("expr: " + expr);
+            //console.println("expr: " + expr);
 
             this.constraints.add(new Constraint(numberOfVariables, expr, maxConst));
         }
@@ -86,7 +86,7 @@ public class LPManager {
                 return null;
 
 
-            console.setMethodPrefix("linearProgramming");
+            console.setMethodPrefix("linearProgramming Result");
             console.println("");
             localObjFunc.printInsideData(console);
             for(Constraint constraint: localConstraints) {
